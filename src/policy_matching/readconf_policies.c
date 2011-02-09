@@ -2055,7 +2055,7 @@ static int parse_policy_block( config_item_t config_item,
 /* macro for preallocating array depending on configuration blocks in Read_Policy_ */
 #define PREALLOC_ARRAY_CONFIG( _block_name_, _type_, _array_var, _goto_label )      \
     do {                                                                            \
-        count = rh_config_CountItemNames( section, _block_name_ );                     \
+        count = rh_config_CountItemNames( section, _block_name_ );                  \
         if ( count > 0 )                                                            \
         {                                                                           \
             policy_list->_array_var = (_type_ *)calloc( count, sizeof(_type_) );    \

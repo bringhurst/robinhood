@@ -164,6 +164,12 @@ static const module_config_def_t robinhood_module_conf[] = {
     {"List Manager", SetDefaultLmgrConfig, ReadLmgrConfig, ReloadLmgrConfig,
      WriteLmgrConfigTemplate, WriteLmgrConfigDefault,
      offsetof( robinhood_config_t, lmgr_config ), MODULE_MASK_ALWAYS},
+    {"Policies", SetDefault_Policies, Read_Policies,
+     Reload_Policies, Write_Policy_Template,
+     Write_Policy_Default, offsetof( robinhood_config_t,
+                                     policies ),
+     MODULE_MASK_ALWAYS},
+
     {"Entry Processor", SetDefault_EntryProc_Config, Read_EntryProc_Config,
      Reload_EntryProc_Config, Write_EntryProc_ConfigTemplate,
      Write_EntryProc_ConfigDefault, offsetof( robinhood_config_t,
@@ -178,12 +184,6 @@ static const module_config_def_t robinhood_module_conf[] = {
      ChgLogRdr_WriteConfigTemplate, ChgLogRdr_WriteDefaultConfig,
      offsetof( robinhood_config_t, chglog_reader_config ), MODULE_MASK_EVENT_HDLR},
 #endif
-
-    {"Policies", SetDefault_Policies, Read_Policies,
-     Reload_Policies, Write_Policy_Template,
-     Write_Policy_Default, offsetof( robinhood_config_t,
-                                     policies ),
-     MODULE_MASK_ALWAYS},
 
     {"Resource Monitor", SetDefault_ResourceMon_Config, Read_ResourceMon_Config,
      Reload_ResourceMon_Config, Write_ResourceMon_ConfigTemplate,

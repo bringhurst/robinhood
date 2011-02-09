@@ -2077,10 +2077,10 @@ void ResMon_UpdateCheckInterval(  )
 {
     unsigned int   i;
 
+    trigger_check_interval = 1;
+
     if ( resmon_config.trigger_count == 0 )
         return;
-
-    trigger_check_interval = 1;
 
     /* compute GCD of trigger check intervals */
 
@@ -2124,17 +2124,8 @@ int Start_ResourceMonitor( resource_monitor_config_t * p_config, resmon_opt_t op
         if ( resmon_config.trigger_count == 0 )
         {
             DisplayLog( LVL_CRIT, RESMON_TAG,
-                        "No purge trigger defined in configuration file... Exiting." );
-            return ENOENT;
-        }
-
-        trigger_check_interval = 1;
-
-        if ( resmon_config.trigger_count == 0 )
-        {
-            DisplayLog( LVL_CRIT, RESMON_TAG,
-                        "No purge trigger defined in configuration file... Exiting." );
-            return ENOENT;
+                        "No purge trigger defined in configuration file... Disabling automatic purges." );
+            return 0;
         }
 
         ResMon_UpdateCheckInterval(  );
