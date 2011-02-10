@@ -1257,22 +1257,30 @@ int main( int argc, char **argv )
         }
 
         rc = Start_ResourceMonitor( &rh_config.res_mon_config, resmon_opt );
-        if ( rc )
+        if ( rc == ENOENT )
+        {
+            DisplayLog( LVL_CRIT, MAIN_TAG, "Resource Monitor is disabled." ); 
+            /* unset it in parsing mask to avoid dumping stats */
+            parsing_mask &= ~MODULE_MASK_RES_MONITOR;
+        }
+        else if ( rc )
         {
             fprintf( stderr, "Error %d initializing Resource Monitor\n", rc );
             exit( rc );
         }
         else
+        {
             DisplayLog( LVL_EVENT, MAIN_TAG, "Resource Monitor successfully initialized" );
 
-        /* Flush logs now, to have a trace in the logs */
-        FlushLogs(  );
+            /* Flush logs now, to have a trace in the logs */
+            FlushLogs(  );
 
-        if ( once )
-        {
-            currently_running_mask = MODULE_MASK_RES_MONITOR;
-            Wait_ResourceMonitor(  );
-            DisplayLog( LVL_MAJOR, MAIN_TAG, "ResourceMonitor terminated its task" );
+            if ( once )
+            {
+                currently_running_mask = MODULE_MASK_RES_MONITOR;
+                Wait_ResourceMonitor(  );
+                DisplayLog( LVL_MAJOR, MAIN_TAG, "ResourceMonitor terminated its task" );
+            }
         }
     }
 
