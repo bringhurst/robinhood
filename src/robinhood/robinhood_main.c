@@ -1288,13 +1288,19 @@ int main( int argc, char **argv )
     if ( action_mask & ACTION_MASK_RMDIR )
     {
         rc = Start_Rmdir( &rh_config.rmdir_config, flags );
-        if ( rc )
+        if ( rc == ENOENT )
         {
-            fprintf( stderr, "Error %d initializing Empty Dir Remover\n", rc );
+            DisplayLog( LVL_CRIT, MAIN_TAG, "Direcory removal is disabled." ); 
+            /* unset it in parsing mask to avoid dumping stats */
+            parsing_mask &= ~MODULE_MASK_RMDIR;
+        }
+        else if ( rc )
+        {
+            fprintf( stderr, "Error %d initializing Directory Remover\n", rc );
             exit( rc );
         }
         else
-            DisplayLog( LVL_EVENT, MAIN_TAG, "Empty Dir Remover successfully initialized" );
+            DisplayLog( LVL_EVENT, MAIN_TAG, "Directory Remover successfully initialized" );
 
         /* Flush logs now, to have a trace in the logs */
         FlushLogs(  );
@@ -1312,7 +1318,13 @@ int main( int argc, char **argv )
     if ( action_mask & ACTION_MASK_UNLINK )
     {
         rc = Start_HSMRm( &rh_config.hsm_rm_config, flags );
-        if ( rc )
+        if ( rc == ENOENT )
+        {
+            DisplayLog( LVL_CRIT, MAIN_TAG, "HSM removal is disabled." ); 
+            /* unset it in parsing mask to avoid dumping stats */
+            parsing_mask &= ~MODULE_MASK_UNLINK;
+        }
+        else if ( rc )
         {
             fprintf( stderr, "Error %d initializing HSM Removal\n", rc );
             exit( rc );

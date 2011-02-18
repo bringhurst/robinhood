@@ -260,7 +260,7 @@ typedef struct policy_list_t
 #ifdef HAVE_RM_POLICY
 typedef struct unlink_policy
 {
-    int     no_hsm_remove; /* feature disabled? */
+    int     hsm_remove; /* feature enabled? */
     time_t  deferred_remove_delay; /* 0=ASAP */
 } unlink_policy_t;
 #endif

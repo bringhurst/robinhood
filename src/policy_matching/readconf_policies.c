@@ -992,7 +992,7 @@ static int set_default_filesets( fileset_list_t * fslist, char *msg_out )
 #ifdef HAVE_RM_POLICY
 static int set_default_unlink_policy( unlink_policy_t * upol, char *msg_out )
 {
-    upol->no_hsm_remove = FALSE; /* hsm_remove enabled */
+    upol->hsm_remove = TRUE; /* hsm_remove enabled */
     upol->deferred_remove_delay = 86400; /* 1 day */
     return 0;
 }
@@ -1000,7 +1000,7 @@ static int set_default_unlink_policy( unlink_policy_t * upol, char *msg_out )
 static int write_default_unlink_policy( FILE * output )
 {
     print_begin_block( output, 0, UNLINKPOLICY_BLOCK, NULL );
-    print_line( output, 1, "no_hsm_remove       :  FALSE (HSM removal enabled)");
+    print_line( output, 1, "hsm_remove       :  enabled");
     print_line( output, 1, "deferred_remove_delay:  1d");
     print_end_block( output, 0 );
     return 0;
@@ -1009,8 +1009,8 @@ static int write_default_unlink_policy( FILE * output )
 static int write_unlink_policy_template( FILE * output )
 {
     print_begin_block( output, 0, UNLINKPOLICY_BLOCK, NULL );
-    print_line( output, 1, "# set this parameter to 'TRUE' for disabling HSM object removal" );
-    print_line( output, 1, "no_hsm_remove = FALSE;");
+    print_line( output, 1, "# set this parameter to 'off' for disabling HSM object removal" );
+    print_line( output, 1, "hsm_remove = enabled;");
     print_line( output, 1, "# delay before impacting object removal in HSM" );
     print_line( output, 1, "deferred_remove_delay = 24h;");
     print_end_block( output, 0 );
@@ -1728,7 +1728,7 @@ static int read_unlink_policy( config_file_t config, unlink_policy_t * pol, char
     int            intval;
 
     static const char *allowed[] = {
-        "no_hsm_remove", "deferred_remove_delay", NULL };
+        "hsm_remove", "deferred_remove_delay", NULL };
 
     /* get unlink policy block */
 
@@ -1747,12 +1747,12 @@ static int read_unlink_policy( config_file_t config, unlink_policy_t * pol, char
     }
 
     /* parse parameters */
-    rc = GetBoolParam( param_block, UNLINKPOLICY_BLOCK, "no_hsm_remove",
+    rc = GetBoolParam( param_block, UNLINKPOLICY_BLOCK, "hsm_remove",
                        0, &intval, NULL, NULL, msg_out );
     if ( ( rc != 0 ) && ( rc != ENOENT ) )
         return rc;
     else if ( rc != ENOENT )
-        pol->no_hsm_remove = intval;
+        pol->hsm_remove = intval;
 
     rc = GetDurationParam( param_block, UNLINKPOLICY_BLOCK, "deferred_remove_delay",
                            INT_PARAM_POSITIVE, &intval, NULL, NULL, msg_out );
