@@ -1290,7 +1290,7 @@ int main( int argc, char **argv )
         rc = Start_Rmdir( &rh_config.rmdir_config, flags );
         if ( rc == ENOENT )
         {
-            DisplayLog( LVL_CRIT, MAIN_TAG, "Direcory removal is disabled." ); 
+            DisplayLog( LVL_CRIT, MAIN_TAG, "Directory removal is disabled." ); 
             /* unset it in parsing mask to avoid dumping stats */
             parsing_mask &= ~MODULE_MASK_RMDIR;
         }
