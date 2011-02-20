@@ -1300,16 +1300,18 @@ int main( int argc, char **argv )
             exit( rc );
         }
         else
+        {
             DisplayLog( LVL_EVENT, MAIN_TAG, "Directory Remover successfully initialized" );
 
-        /* Flush logs now, to have a trace in the logs */
-        FlushLogs(  );
+            /* Flush logs now, to have a trace in the logs */
+            FlushLogs(  );
 
-        if ( once )
-        {
-            currently_running_mask = MODULE_MASK_RMDIR;
-            Wait_Rmdir(  );
-            DisplayLog( LVL_MAJOR, MAIN_TAG, "Directory Remover terminated its task" );
+            if ( once )
+            {
+                currently_running_mask = MODULE_MASK_RMDIR;
+                Wait_Rmdir(  );
+                DisplayLog( LVL_MAJOR, MAIN_TAG, "Directory Remover terminated its task" );
+            }
         }
     }
 #endif
@@ -1330,20 +1332,21 @@ int main( int argc, char **argv )
             exit( rc );
         }
         else
+        {
             DisplayLog( LVL_EVENT, MAIN_TAG, "HSM removal successfully initialized" );
 
-        /* Flush logs now, to have a trace in the logs */
-        FlushLogs(  );
+            /* Flush logs now, to have a trace in the logs */
+            FlushLogs(  );
 
-        if ( once )
-        {
-            currently_running_mask = MODULE_MASK_UNLINK;
-            Wait_HSMRm(  );
-            DisplayLog( LVL_MAJOR, MAIN_TAG, "HSM removal terminated" );
+            if ( once )
+            {
+                currently_running_mask = MODULE_MASK_UNLINK;
+                Wait_HSMRm(  );
+                DisplayLog( LVL_MAJOR, MAIN_TAG, "HSM removal terminated" );
+            }
         }
     }
 #endif
-
 
     if ( !once )
     {
